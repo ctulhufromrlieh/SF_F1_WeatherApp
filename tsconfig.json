@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true
+    },
+    "exclulde": [
+        "node_modules"
+    ]
+}
