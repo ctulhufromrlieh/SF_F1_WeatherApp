@@ -16,7 +16,7 @@ function MultiWeatherDataElem(props){
             { is_valid ?
                 <>            
                     {
-                        datas.map((data, index) => { return <WeatherDataElem key={index} cityIndex={props.cityIndex} weatherData={datas[index]} /> } )
+                        datas.map((data, index) => { return <WeatherDataElem key={index} weatherHelper={props.weatherHelper} cityIndex={props.cityIndex} weatherData={datas[index]} /> } )
                     }
                 </> :
                  <p>Нет данных...</p>

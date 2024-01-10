@@ -17,7 +17,7 @@ function SingleWeatherDataElem(props){
     return (
         <>
         { is_valid ?
-            <WeatherDataElem cityIndex={props.cityIndex} weatherData={data} /> :
+            <WeatherDataElem weatherHelper={props.weatherHelper} cityIndex={props.cityIndex} weatherData={data} /> :
             <p>Нет данных...</p>
         }
         </>

@@ -52,8 +52,8 @@ function Main(props) {
             <CitySelector weatherHelper={props.weatherHelper} modeIndex={props.modeIndex} cityIndex={props.cityIndex} />
             <WeatherModeSelector weatherHelper={props.weatherHelper} modeIndex={props.modeIndex} cityIndex={props.cityIndex} />
             {props.modeIndex == 0 ?
-                <SingleWeatherDataElem cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} /> :
-                <MultiWeatherDataElem cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} />
+                <SingleWeatherDataElem weatherHelper={props.weatherHelper} cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} /> :
+                <MultiWeatherDataElem weatherHelper={props.weatherHelper} cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} />
             }
         </main>
 );
