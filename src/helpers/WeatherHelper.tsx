@@ -12,8 +12,8 @@ type WeatherData = {
     temp_feels_like: number,
     temp_min: number,
     temp_max: number,
-    pressure: 1006,
-    humidity: 69
+    pressure: number,
+    humidity: number
 }
 
 type SingleWeatherData = {
@@ -26,53 +26,13 @@ type MultiWeatherData = {
     dt: Date,
 }
 
-// type WeatherDataChangedFunc = () => void;
 type SetDataFunc = React.Dispatch<any>;
-
-// const cityDatas = [
-//     {
-//         name: "Москва",
-//         // 55°45′21″ с. ш. 37°37′04″ в. д
-//         lat: 55.4521,
-//         lon: 37.3704,
-//         // tz: 3.0, // UTC+3
-//         tz: "+03:00",
-//     },
-//     {
-//         name: "Санкт-Петербург",
-//         // 59°57′ с. ш. 30°19′ в. д.
-//         lat: 59.57,
-//         lon: 30.19,
-//         // tz: 3.0, // UTC+3
-//         tz: "+03:00",
-//     },
-//     {
-//         name: "Екатеринбург",
-//         // 56°50′ с. ш. 60°35′ в. д.
-//         lat: 56.50,
-//         lon: 60.35,
-//         // tz: 5.0, // UTC+5
-//         tz: "+05:00",
-//     },
-//     {
-//         name: "Пермь",
-//         // 58°00′50″ с. ш. 56°14′56″ в. д.
-//         lat: 58.0050,
-//         lon: 56.1456,
-//         // tz: 5.0, // UTC+5
-//         tz: "+05:00",
-//     }
-// ]
 
 // examples
 // 
 // https://api.openweathermap.org/data/2.5/weather?lat=58.0050&lon=56.1456&units=metric&appid=f4ae72126d5ca78c5dd8fe868451636d
 // 
 // https://api.openweathermap.org/data/2.5/forecast?lat=58.0050&lon=56.1456&units=metric&cnt=40&appid=f4ae72126d5ca78c5dd8fe868451636d
-//
-//// paid:
-//// https://api.openweathermap.org/data/2.5/forecast/daily?lat=58.0050&lon=56.1456&units=metric&cnt=5&appid=f4ae72126d5ca78c5dd8fe868451636d
-
 
 class WeatherHelper {
 
@@ -111,13 +71,15 @@ class WeatherHelper {
 
     cachedSingleDatas = [];
     cachedMultiDatas = [];
-    setCountryIndex = null;
+    setCityIndex = null;
     setModeIndex = null;
     setWeatherDataFunc = null;
 
     cacheLifeTime = 60 * 1000;
 
-    constructor(setWeatherDataFunc: SetDataFunc){
+    constructor(setModeIndex: SetDataFunc, setCityIndex: SetDataFunc, setWeatherDataFunc: SetDataFunc){
+        this.setModeIndex = setModeIndex;
+        this.setCityIndex = setCityIndex;
         this.setWeatherDataFunc = setWeatherDataFunc;
 
         this.cityDatas.map((cityData, index) => {
@@ -126,13 +88,13 @@ class WeatherHelper {
         })
     }
 
-    getCityDataByIndex(index: number){
-        return this.cityDatas[index];
+    getCityDataByIndex(cityIndex: number){
+        return this.cityDatas[cityIndex];
     }
 
-    getCityDataCount(){
-        return this.cityDatas.length;
-    }
+    // getCityDataCount(){
+    //     return this.cityDatas.length;
+    // }
 
     isValidDate(dt: Date){
         return (Date.now() - dt.getTime() < this.cacheLifeTime);
@@ -154,47 +116,70 @@ class WeatherHelper {
         }
     }
 
-    refreshCacheSingleWeatherData(index: number): void {
-        const cityData = this.getCityDataByIndex(index);
+    refreshCacheSingleWeatherData(cityIndex: number): void {
+        const cityData = this.getCityDataByIndex(cityIndex);
+        if (!cityData){
+            this.setWeatherDataFunc(null);
+            return;
+        }
 
         const singleWeatherDataURL = `https://api.openweathermap.org/data/2.5/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${this.openWeatherMapAppId}`;
         axios.get(singleWeatherDataURL).then(res => {
+            // console.log(res);
+            let resdata = res.data;
             let data = {
                 // dt: res["dt"],
                 dt: Date.now(),
                 data: {
-                    temp: res["main"]["temp"],
-                    temp_feels_like: res["main"]["feels_like"],
-                    temp_min: res["main"]["temp_min"],
-                    temp_max: res["main"]["temp_max"],
-                    pressure: res["main"]["pressure"],
-                    humidity: res["main"]["humidity"],
+                    temp: resdata["main"]["temp"],
+                    temp_feels_like: resdata["main"]["feels_like"],
+                    temp_min: resdata["main"]["temp_min"],
+                    temp_max: resdata["main"]["temp_max"],
+                    pressure: resdata["main"]["pressure"],
+                    humidity: resdata["main"]["humidity"],
                 },
             };
 
-            this.cachedSingleDatas[index] = data;
+            this.cachedSingleDatas[cityIndex] = data;
 
-            this.setWeatherDataFunc();
+            console.log("this.setWeatherDataFunc(data)");
+            console.log(data);
+            this.setWeatherDataFunc(data);
         });
     }
 
+    // setSingleWeatherDataByIndex(cityIndex: number): SingleWeatherData {
+    //     let cached = this.cachedSingleDatas[cityIndex];
+    //     if (this.isValidSingleWeatherData(cached)){
+    //         return cached;
+    //     }else{
+    //         this.refreshCacheSingleWeatherData(cityIndex);
+    //         return null;
+    //     }
+    // }
+
     refreshCacheMultiWeatherData(index: number): void {
         const cityData = this.getCityDataByIndex(index);
+        if (!cityData){
+            this.setWeatherDataFunc(null);
+            return;
+        }
 
         const singleWeatherDataURL = `https://api.openweathermap.org/data/2.5/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${this.openWeatherMapAppId}`;
         const multiWeatherDataURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&cnt=40&appid=${this.openWeatherMapAppId}`;
         // https://api.openweathermap.org/data/2.5/forecast?lat=58.0050&lon=56.1456&units=metric&cnt=40&appid=f4ae72126d5ca78c5dd8fe868451636d
         axios.get(multiWeatherDataURL).then(res => {
+            let resdata = res.data;
             let day_datas = [
-                res["list"][4]["main"],
-                res["list"][12]["main"],
-                res["list"][20]["main"],
-                res["list"][28]["main"],
-                res["list"][36]["main"],
+                resdata["list"][4]["main"],
+                resdata["list"][12]["main"],
+                resdata["list"][20]["main"],
+                resdata["list"][28]["main"],
+                resdata["list"][36]["main"],
             ];
             let data = {
                 dt: Date.now(),
-                data: [
+                datas: [
                     {
                         temp: day_datas[0]["temp"],
                         temp_feels_like: day_datas[0]["feels_like"],
@@ -240,29 +225,52 @@ class WeatherHelper {
 
             this.cachedMultiDatas[index] = data;
 
-            this.setWeatherDataFunc();
+            this.setWeatherDataFunc(data);
         });
     }
 
-    getSingleWeatherDataByIndex(index: number): SingleWeatherData {
-        let cached = this.cachedSingleDatas[index];
-        if (this.isValidSingleWeatherData(cached)){
-            return cached;
+    setUsedWeatherData(modeIndex: number, cityIndex: number): void{
+        console.log(`setUsedWeatherData(modeIndex = ${modeIndex}, cityIndex = ${cityIndex})`);
+        if (modeIndex == 0){
+            let cached = this.cachedSingleDatas[cityIndex];
+            if (this.isValidSingleWeatherData(cached)){
+                this.setWeatherDataFunc(cached);
+            }else{
+                this.refreshCacheSingleWeatherData(cityIndex);
+                this.setWeatherDataFunc(null);
+            }                
+        }else if (modeIndex == 1){
+            let cached = this.cachedMultiDatas[cityIndex];
+            if (this.isValidMultiWeatherData(cached)){
+                this.setWeatherDataFunc(cached);
+            }else{
+                this.refreshCacheMultiWeatherData(cityIndex);
+                this.setWeatherDataFunc(null);
+            }
         }else{
-            this.refreshCacheSingleWeatherData(index);
-            return null;
+            throw new Error("WeatherHelper.setUsedWeatherData: wrong modeIndex!")
         }
     }
 
-    getMultiWeatherDataByIndex(index: number): MultiWeatherData {
-        let cached = this.cachedMultiDatas[index];
-        if (this.isValidMultiWeatherData(cached)){
-            return cached;
-        }else{
-            this.refreshCacheMultiWeatherData(index);
-            return null;
-        }
-    }
+    // getSingleWeatherDataByIndex(index: number): SingleWeatherData {
+    //     let cached = this.cachedSingleDatas[index];
+    //     if (this.isValidSingleWeatherData(cached)){
+    //         return cached;
+    //     }else{
+    //         this.refreshCacheSingleWeatherData(index);
+    //         return null;
+    //     }
+    // }
+
+    // getMultiWeatherDataByIndex(index: number): MultiWeatherData {
+    //     let cached = this.cachedMultiDatas[index];
+    //     if (this.isValidMultiWeatherData(cached)){
+    //         return cached;
+    //     }else{
+    //         this.refreshCacheMultiWeatherData(index);
+    //         return null;
+    //     }
+    // }
 }
 
 // const weatherHelper = new WeatherHelper();

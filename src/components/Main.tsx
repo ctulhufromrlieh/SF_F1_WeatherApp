@@ -7,6 +7,9 @@ import "../styles/Main.css";
 import CitySelector from "./CitySelector";
 import WeatherModeSelector from "./WeatherModeSelector";
 
+import SingleWeatherDataElem from "./SingleWeatherDataElem";
+import MultiWeatherDataElem from "./MultiWeatherDataElem";
+
 // import Countries from "./Countries";
 // import Alerts from "./Alerts";
 
@@ -46,8 +49,12 @@ function Main(props) {
 
     return (
         <main>
-            <CitySelector weatherHelper={props.weatherHelper}/>
-            <WeatherModeSelector />
+            <CitySelector weatherHelper={props.weatherHelper} modeIndex={props.modeIndex} cityIndex={props.cityIndex} />
+            <WeatherModeSelector weatherHelper={props.weatherHelper} modeIndex={props.modeIndex} cityIndex={props.cityIndex} />
+            {props.modeIndex == 0 ?
+                <SingleWeatherDataElem cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} /> :
+                <MultiWeatherDataElem cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} />
+            }
         </main>
 );
 }

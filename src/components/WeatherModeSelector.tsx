@@ -5,14 +5,16 @@ import "../styles/WeatherModeSelector.css";
 import { CityData, WeatherHelper } from "../helpers/WeatherHelper";
 
 function WeatherModeSelector (props) {
-    let [selectedModeIndex, setSelectedModeIndex] = React.useState(0);
-    // const weatherHelper: WeatherHelper = props.weatherHelper;
+    // let [selectedModeIndex, setSelectedModeIndex] = React.useState(0);
+    // console.log(props);
+    // console.log(props.modeIndex);
+    const weatherHelper: WeatherHelper = props.weatherHelper;
 
-    const makeSelectHandler = (index: number) => {
-        return (() => {
-            setSelectedModeIndex(index);
-        })
-    };
+    // const makeSelectHandler = (index: number) => {
+    //     return (() => {
+    //         setSelectedModeIndex(index);
+    //     })
+    // };
 
     const weatherModes = [
         "Прогноз на сегодня",
@@ -27,11 +29,11 @@ function WeatherModeSelector (props) {
                     return (
                         <React.Fragment key={index}>
                             {
-                                selectedModeIndex == index ?
-                                <ListGroup.Item onClick={makeSelectHandler(index)} active>
+                                props.modeIndex == index ?
+                                <ListGroup.Item onClick={() => {weatherHelper.setModeIndex(index); weatherHelper.setUsedWeatherData(index, props.cityIndex); }} active>
                                     {weatherMode}
                                 </ListGroup.Item> :
-                                <ListGroup.Item onClick={makeSelectHandler(index)}>
+                                <ListGroup.Item onClick={() => {weatherHelper.setModeIndex(index); weatherHelper.setUsedWeatherData(index, props.cityIndex); }}>
                                     {weatherMode}
                                 </ListGroup.Item>
                             }
