@@ -124,14 +124,18 @@ class WeatherHelper {
         }
 
         const singleWeatherDataURL = `https://api.openweathermap.org/data/2.5/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${this.openWeatherMapAppId}`;
-        axios.get(singleWeatherDataURL).then(res => {
+        // const singleWeatherDataURL = `http://api.openweathermap.org/data/2.5/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${this.openWeatherMapAppId}`;
+        // const singleWeatherDataURL = `api.openweathermap.org/data/2.5/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${this.openWeatherMapAppId}`;
+        axios.get(singleWeatherDataURL, {
+            withCredentials: false,
+        }).then(res => {
             // console.log(res);
             let resdata = res.data;
             let data = {
                 // dt: res["dt"],
                 checkdate: Date.now(),
                 data: {
-                    dt: resdata["dt"],
+                    dt: resdata["dt"] * 1000,  // s -> ms
                     temp: resdata["main"]["temp"],
                     temp_feels_like: resdata["main"]["feels_like"],
                     temp_min: resdata["main"]["temp_min"],
@@ -168,8 +172,11 @@ class WeatherHelper {
 
         const singleWeatherDataURL = `https://api.openweathermap.org/data/2.5/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${this.openWeatherMapAppId}`;
         const multiWeatherDataURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&cnt=40&appid=${this.openWeatherMapAppId}`;
+        // const multiWeatherDataURL = `api.openweathermap.org/data/2.5/forecast?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&cnt=40&appid=${this.openWeatherMapAppId}`;
         // https://api.openweathermap.org/data/2.5/forecast?lat=58.0050&lon=56.1456&units=metric&cnt=40&appid=f4ae72126d5ca78c5dd8fe868451636d
-        axios.get(multiWeatherDataURL).then(res => {
+        axios.get(multiWeatherDataURL, {
+            withCredentials: false,
+        }).then(res => {
             let resdata = res.data;
             console.log(resdata);
             let day_datas = [
@@ -183,7 +190,7 @@ class WeatherHelper {
                 checkdate: Date.now(),
                 datas: [
                     {
-                        dt: day_datas[0]["dt"],
+                        dt: day_datas[0]["dt"] * 1000,  // s -> ms
                         temp: day_datas[0]["main"]["temp"],
                         temp_feels_like: day_datas[0]["main"]["feels_like"],
                         temp_min: day_datas[0]["main"]["temp_min"],
@@ -192,7 +199,7 @@ class WeatherHelper {
                         humidity: day_datas[0]["main"]["humidity"],
                     },
                     {
-                        dt: day_datas[1]["dt"],
+                        dt: day_datas[1]["dt"] * 1000,  // s -> ms
                         temp: day_datas[1]["main"]["temp"],
                         temp_feels_like: day_datas[1]["main"]["feels_like"],
                         temp_min: day_datas[1]["main"]["temp_min"],
@@ -201,7 +208,7 @@ class WeatherHelper {
                         humidity: day_datas[1]["main"]["humidity"],
                     },
                     {
-                        dt: day_datas[2]["dt"],
+                        dt: day_datas[2]["dt"] * 1000,  // s -> ms
                         temp: day_datas[2]["main"]["temp"],
                         temp_feels_like: day_datas[2]["main"]["feels_like"],
                         temp_min: day_datas[2]["main"]["temp_min"],
@@ -210,7 +217,7 @@ class WeatherHelper {
                         humidity: day_datas[2]["main"]["humidity"],
                     },
                     {
-                        dt: day_datas[3]["dt"],
+                        dt: day_datas[3]["dt"] * 1000, // s -> ms
                         temp: day_datas[3]["main"]["temp"],
                         temp_feels_like: day_datas[3]["main"]["feels_like"],
                         temp_min: day_datas[3]["main"]["temp_min"],
@@ -219,7 +226,7 @@ class WeatherHelper {
                         humidity: day_datas[3]["main"]["humidity"],
                     },
                     {
-                        dt: day_datas[4]["dt"],
+                        dt: day_datas[4]["dt"] * 1000, // s -> ms
                         temp: day_datas[4]["main"]["temp"],
                         temp_feels_like: day_datas[4]["main"]["feels_like"],
                         temp_min: day_datas[4]["main"]["temp_min"],

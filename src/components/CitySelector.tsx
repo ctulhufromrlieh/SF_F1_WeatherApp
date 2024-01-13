@@ -2,6 +2,8 @@ import * as React from "react";
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import "../styles/CitySelector.css";
+import "../styles/Common.css";
+
 import { CityData, WeatherHelper } from "../helpers/WeatherHelper";
 
 function CitySelector (props) {
@@ -17,37 +19,10 @@ function CitySelector (props) {
 
     return (
         <>
-            <h2>Выберите город:</h2>
+            <div className="flex-width-large"><h2>Выберите город</h2></div>
+            <div className="flex-width-small"><h2>Город</h2></div>
             <ListGroup className="city-selector">
                 { weatherHelper.cityDatas.map((cityData: CityData, index) => {
-                    // return (
-                    //     <React.Fragment key={index}>
-                    //         {
-                    //             selectedCityIndex == index ?
-                    //             <ListGroup.Item onClick={makeSelectHandler(index)} active>
-                    //                 {cityData.name}
-                    //             </ListGroup.Item> :
-                    //             <ListGroup.Item onClick={makeSelectHandler(index)}>
-                    //             {cityData.name}
-                    //             </ListGroup.Item>
-                    //         }
-                    //     </React.Fragment>
-                    // );
-
-                    // return (
-                    //     <React.Fragment key={index}>
-                    //         {
-                    //             props.cityIndex == index ?
-                    //             <ListGroup.Item onClick={() => {console.log("setCityIndex(" + index + ")"); console.log("props.cityIndex = " + props.cityIndex); weatherHelper.setCityIndex(index)}} active>
-                    //                 {cityData.name}
-                    //             </ListGroup.Item> :
-                    //             <ListGroup.Item onClick={() => {console.log("setCityIndex(" + index + ")"); console.log("props.cityIndex = " + props.cityIndex); weatherHelper.setCityIndex(index)}}>
-                    //             {cityData.name}
-                    //             </ListGroup.Item>
-                    //         }
-                    //     </React.Fragment>
-                    // );
-
                     return (
                         <React.Fragment key={index}>
                             {

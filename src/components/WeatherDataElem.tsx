@@ -1,10 +1,14 @@
 import * as React from "react";
 import { WeatherHelper } from "../helpers/WeatherHelper";
 
+import "../styles/WeatherDataElem.css";
+import "../styles/Common.css";
+
 function WeatherDataElem(props){
     const weatherHelper: WeatherHelper = props.weatherHelper;
     let wd = props.weatherData;
-    let dt = new Date(wd.dt * 1000);
+    // let dt = new Date(wd.dt * 1000);
+    let dt = new Date(wd.dt);
     // let dt = wd.dt;
     console.log(wd.dt);
     console.log(dt);
@@ -16,13 +20,22 @@ function WeatherDataElem(props){
     // console.log(props);
     return (
         <>
-            <h1>Город: {weatherHelper.getCityDataByIndex(props.cityIndex).name}</h1>
-            <h1>{monthNames[dt.getMonth()]}, { dt.getDate() }</h1>
-            <h1>Погода за n-день:</h1>
-            <h2>Температура: {wd.temp} °C</h2>
-            <h3>  ощущается как {wd.temp_feels_like}</h3>
-            <h2>Диапазон температур: {wd.temp_min}  °C - {wd.temp_min}  °C</h2>
-            <h2>Влажность: {wd.humidity} %</h2>
+            <div className="weather-data-elem data-elem-large">
+                <p><b>Город: {weatherHelper.getCityDataByIndex(props.cityIndex).name}</b></p>
+                <p>{monthNames[dt.getMonth()]}, { dt.getDate() }</p>
+                <p>Температура: {wd.temp} °C</p>
+                <p>  ощущается как {wd.temp_feels_like} °C</p>
+                <p>Диапазон: {wd.temp_min}  °C .. {wd.temp_min}  °C</p>
+                <p>Влажность: {wd.humidity} %</p>
+            </div>
+            <div className="weather-data-elem data-elem-small">
+                <p><b>{weatherHelper.getCityDataByIndex(props.cityIndex).name}</b></p>
+                <p>{monthNames[dt.getMonth()]}, { dt.getDate() }</p>
+                <p>t =  {wd.temp} °C</p>
+                <p>  (t ~ {wd.temp_feels_like} °C)</p>
+                <p>t1..t2 = {wd.temp_min}  °C .. {wd.temp_min}  °C</p>
+                <p>H = {wd.humidity} %</p>
+            </div>
         </>
     );
 }

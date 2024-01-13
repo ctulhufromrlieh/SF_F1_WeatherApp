@@ -1,0 +1,52 @@
+.weather-data-elem{
+    background-color: #ddd;
+    color: #444;
+    font-family: Arial, sans-serif;
+    font-size: 0.9em;
+    margin: 5px;
+    border-radius: 10px;    
+}
+
+/* .subelem{   
+    align-items: center;
+    border-radius: 10px;
+    display: flex;
+    height: 200px;
+    justify-content: center;
+    margin: 5px;
+    overflow-y: hidden;
+    width: 200px;
+} */
+
+.data-elem-small{
+    display: none;
+}
+
+@media screen and (max-width: 400px){
+    /* main{
+        padding: 0;
+    } */
+
+    .data-elem-small{
+        display: block;
+    }
+    
+    .data-elem-large{
+        display: none;
+    }
+
+    /* .subelem{
+        border-radius: 0;
+        height: auto;
+        margin: 2px 0;        
+        overflow-x: hidden;
+        padding: 5px;
+        width: 100vw; 
+    } */
+}
+
+/* @media screen and (max-height: 450px){
+    .collapsible{
+        --collapse-on-start: true;
+     }
+} */

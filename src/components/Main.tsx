@@ -10,40 +10,6 @@ import WeatherModeSelector from "./WeatherModeSelector";
 import SingleWeatherDataElem from "./SingleWeatherDataElem";
 import MultiWeatherDataElem from "./MultiWeatherDataElem";
 
-// import Countries from "./Countries";
-// import Alerts from "./Alerts";
-
-// class Main extends React.Component {
-//     render() {
-//         return (
-//             <main>
-//                 <Countries />
-//             </main>
-//         );
-//     }
-// }
-
-// function Main() {
-//     let alertText = <b>This is some text for alert</b>;
-
-//     return (
-//         <main>
-//             <Alerts>
-//                 <Alert variant={"danger"}>
-//                     { alertText }
-//                 </Alert>
-//                 <Alert variant={"success"}>
-//                     { alertText }
-//                 </Alert>
-//                 <Alert variant={"warning"}>
-//                     { alertText }
-//                 </Alert>
-//             </Alerts>
-//             <Countries />
-//         </main>
-// );
-// }
-
 function Main(props) {
     let alertText = <b>This is some text for alert</b>;
 
@@ -51,10 +17,12 @@ function Main(props) {
         <main>
             <CitySelector weatherHelper={props.weatherHelper} modeIndex={props.modeIndex} cityIndex={props.cityIndex} />
             <WeatherModeSelector weatherHelper={props.weatherHelper} modeIndex={props.modeIndex} cityIndex={props.cityIndex} />
-            {props.modeIndex == 0 ?
-                <SingleWeatherDataElem weatherHelper={props.weatherHelper} cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} /> :
-                <MultiWeatherDataElem weatherHelper={props.weatherHelper} cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} />
-            }
+            <div className="weather-data-elem-container">
+                {props.modeIndex == 0 ?
+                    <SingleWeatherDataElem weatherHelper={props.weatherHelper} cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} /> :
+                    <MultiWeatherDataElem weatherHelper={props.weatherHelper} cityIndex={props.cityIndex} usedWeatherData={props.usedWeatherData} />
+                }
+            </div>
         </main>
 );
 }

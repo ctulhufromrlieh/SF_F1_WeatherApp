@@ -2,6 +2,7 @@ import * as React from "react";
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import "../styles/WeatherModeSelector.css";
+import "../styles/Common.css";
 import { CityData, WeatherHelper } from "../helpers/WeatherHelper";
 
 function WeatherModeSelector (props) {
@@ -23,7 +24,8 @@ function WeatherModeSelector (props) {
 
     return (
         <>
-            <h2>Выберите режим работы</h2>
+            <div className="flex-width-large"><h2>Выберите режим работы</h2></div>
+            <div className="flex-width-small"><h2>Режим</h2></div>
             <ListGroup className="weather-mode-selector">
                 { weatherModes.map((weatherMode: string, index) => {
                     return (

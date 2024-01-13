@@ -1,0 +1,32 @@
+.flex-width-small{
+    display: none;
+}
+
+@media screen and (max-width: 250px){
+    main{
+        padding: 0;
+    }
+
+    .flex-width-small{
+        display: block;
+    }
+    
+    .flex-width-large{
+        display: none;
+    }
+
+    /* .subelem{
+        border-radius: 0;
+        height: auto;
+        margin: 2px 0;        
+        overflow-x: hidden;
+        padding: 5px;
+        width: 100vw; 
+    } */
+}
+
+/* @media screen and (max-height: 450px){
+    .collapsible{
+        --collapse-on-start: true;
+     }
+} */
