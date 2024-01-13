@@ -1,0 +1,22 @@
+.selector-elem {
+    cursor: pointer;
+}
+
+.selector-elem-caption-small{
+    display: none;
+}
+
+@media screen and (max-width: 250px){
+    main{
+        padding: 0;
+    }
+
+    .selector-elem-caption-small{
+        display: block;
+    }
+    
+    .selector-elem-caption-large{
+        display: none;
+    }
+
+}

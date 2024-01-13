@@ -88,13 +88,41 @@ class WeatherHelper {
         })
     }
 
+    getModeNames(){
+        return [
+            "Прогноз на сегодня", 
+            "Прогноз на 5 дней"
+        ];
+    }
+
+    getModeOnClickHandlers(cityIndex){
+        return Array.from(
+            this.getModeNames(), 
+            (mode, index) => (() => {
+                this.setModeIndex(index); 
+                this.setUsedWeatherData(index, cityIndex)
+            })
+        );
+        // weatherHelper.setModeIndex(index); weatherHelper.setUsedWeatherData(index, props.cityIndex); 
+    }
+
     getCityDataByIndex(cityIndex: number){
         return this.cityDatas[cityIndex];
     }
 
-    // getCityDataCount(){
-    //     return this.cityDatas.length;
-    // }
+    getCityNames(){
+        return Array.from(this.cityDatas, (cityData: CityData) => cityData.name);
+    }
+
+    getCityOnClickHandlers(modeIndex){
+        return Array.from(
+            this.getCityNames(), 
+            (cityName, index) => (() => {
+                this.setCityIndex(index); 
+                this.setUsedWeatherData(modeIndex, index);
+            })
+        );
+    }
 
     isValidDate(dt: Date){
         return (Date.now() - dt.getTime() < this.cacheLifeTime);
@@ -127,7 +155,7 @@ class WeatherHelper {
         // const singleWeatherDataURL = `http://api.openweathermap.org/data/2.5/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${this.openWeatherMapAppId}`;
         // const singleWeatherDataURL = `api.openweathermap.org/data/2.5/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${this.openWeatherMapAppId}`;
         axios.get(singleWeatherDataURL, {
-            withCredentials: false,
+            // withCredentials: false,
         }).then(res => {
             // console.log(res);
             let resdata = res.data;
@@ -150,6 +178,10 @@ class WeatherHelper {
             console.log("this.setWeatherDataFunc(data)");
             console.log(data);
             this.setWeatherDataFunc(data);
+        }).catch(error => {
+            console.log(error);
+            this.setWeatherDataFunc(null);
+            return;
         });
     }
 
@@ -175,7 +207,7 @@ class WeatherHelper {
         // const multiWeatherDataURL = `api.openweathermap.org/data/2.5/forecast?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&cnt=40&appid=${this.openWeatherMapAppId}`;
         // https://api.openweathermap.org/data/2.5/forecast?lat=58.0050&lon=56.1456&units=metric&cnt=40&appid=f4ae72126d5ca78c5dd8fe868451636d
         axios.get(multiWeatherDataURL, {
-            withCredentials: false,
+            // withCredentials: false,
         }).then(res => {
             let resdata = res.data;
             console.log(resdata);
@@ -240,6 +272,10 @@ class WeatherHelper {
             this.cachedMultiDatas[index] = data;
 
             this.setWeatherDataFunc(data);
+        }).catch(error => {
+            console.log(error);
+            this.setWeatherDataFunc(null);
+            return;            
         });
     }
 
